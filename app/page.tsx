@@ -1,7 +1,22 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 export default function Home() {
+
+  const router = useRouter()
+
+  useEffect(() => {
+    const session = localStorage.getItem("session")
+
+    if (!session) {
+      router.push("/auth/login")
+    }
+  }, [])
+
   return (
     <div className="p-8 space-y-6">
       
