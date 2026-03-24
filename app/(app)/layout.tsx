@@ -1,38 +1,34 @@
-import Link from "next/link"
+"use client"
+
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 
 export default function AppLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+
+  const router = useRouter()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const session = localStorage.getItem("session")
+
+    if (!session) {
+      router.push("/auth/login")
+    } else {
+      setLoading(false)
+    }
+  }, [])
+
+  if (loading) {
+    return <p className="p-6">Cargando...</p>
+  }
+
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* HEADER */}
-      <header className="border-b">
-        <div className="flex items-center justify-between p-4">
-          <h1 className="font-bold text-lg">Nombre Chingon</h1>
-
-          <nav className="flex gap-4 text-sm">
-            <Link href="/" className="hover:underline">
-              Inicio
-            </Link>
-            <Link href="/groups" className="hover:underline">
-              Grupos
-            </Link>
-            <Link href="/schedule" className="hover:underline">
-              Horario
-            </Link>
-            <Link href="/map" className="hover:underline">
-              Mapa
-            </Link>
-          </nav>
-        </div>
-      </header>
-
-      {/* CONTENIDO */}
-      <main className="flex-1">
-        {children}
-      </main>
+    <div>
+      {children}
     </div>
   )
 }
